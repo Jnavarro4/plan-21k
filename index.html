@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Plan 21K Jose David</title>
+<meta name="theme-color" content="#1d3fd1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#eef1f6; --surface:#ffffff; --surface-2:#e4e9f1; --ink:#131b2b; --muted:#5b667a; --line:#d3dae6;
+  --accent:#1d3fd1; --accent-ink:#ffffff; --sun:#f3b21b; --sun-ink:#2a1d00;
+  --done:#12805c; --done-bg:#e3f4ec; --rest:#6c7a93;
+  --shadow:0 1px 2px rgba(19,27,43,.06),0 6px 20px rgba(19,27,43,.06);
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0c111c; --surface:#151c2b; --surface-2:#1d2638; --ink:#e9eef7; --muted:#95a1b7; --line:#28324a;
+    --accent:#6f8dff; --accent-ink:#0b1022; --sun:#f5bd3a; --sun-ink:#231800;
+    --done:#43c795; --done-bg:#11291f; --rest:#8391aa;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0c111c; --surface:#151c2b; --surface-2:#1d2638; --ink:#e9eef7; --muted:#95a1b7; --line:#28324a;
+  --accent:#6f8dff; --accent-ink:#0b1022; --sun:#f5bd3a; --sun-ink:#231800;
+  --done:#43c795; --done-bg:#11291f; --rest:#8391aa;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+.app{max-width:520px;margin:0 auto;padding-inline:16px;padding-block:14px 110px}
+button{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* Bib header */
+.bib{background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:16px 18px 18px;position:relative;overflow:hidden}
+.bib::before,.bib::after{content:"";position:absolute;top:12px;width:10px;height:10px;border-radius:50%;background:var(--bg)}
+.bib::before{left:12px}.bib::after{right:12px}
+.bib-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.85;padding-inline:14px}
+.bib-main{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:6px}
+.bib-week{font-family:var(--display);font-weight:800;font-size:88px;line-height:.82;letter-spacing:-.01em}
+.bib-week small{font-size:28px;font-weight:700;opacity:.7;margin-left:4px}
+.bib-side{text-align:right;padding-bottom:4px}
+.bib-side .k{font-family:var(--display);font-size:34px;font-weight:700;line-height:1}
+.bib-side .l{font-size:12px;opacity:.85}
+.bib-range{margin-top:10px;font-size:13px;opacity:.9}
+.segs{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.segs span{height:6px;border-radius:3px;background:color-mix(in srgb,var(--accent-ink) 25%,transparent)}
+.segs span.on{background:var(--accent-ink)}
+
+/* Week strip */
+.strip-wrap{margin-top:14px;display:flex;align-items:center;gap:8px}
+.strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-block:4px;flex:1;scroll-snap-type:x proximity}
+.strip::-webkit-scrollbar{display:none}
+.wk{flex:0 0 auto;width:48px;height:56px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;scroll-snap-align:center;position:relative}
+.wk b{font-family:var(--display);font-size:22px;line-height:1}
+.wk i{font-style:normal;font-size:10px;color:var(--muted)}
+.wk.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.wk.now::after{content:"";position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:var(--sun);border:2px solid var(--bg)}
+.wk.full{background:var(--done-bg);border-color:transparent}
+.wk.full i{color:var(--done);font-weight:600}
+.wk.race b{color:var(--accent)}
+.today-btn{flex:0 0 auto;border:0;background:var(--surface-2);border-radius:12px;height:56px;padding-inline:12px;font-size:12px;font-weight:600;cursor:pointer}
+
+.phase{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:13.5px;color:var(--muted)}
+.phase strong{color:var(--ink)}
+
+/* Days */
+.days{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.day{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;transition:transform .12s,background .2s}
+.day:active{transform:scale(.985)}
+.day.today{border-color:var(--sun);box-shadow:0 0 0 2px color-mix(in srgb,var(--sun) 45%,transparent)}
+.day.done{background:var(--done-bg);border-color:transparent}
+.day.rest:not(.done){background:transparent;border-style:dashed}
+.chk{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;margin-top:2px;transition:all .2s}
+.done .chk{background:var(--done);border-color:var(--done)}
+.chk svg{width:16px;height:16px;opacity:0;color:#fff}
+.done .chk svg{opacity:1}
+.day-body{flex:1;min-width:0}
+.day-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dname{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.tag-today{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--sun);color:var(--sun-ink);border-radius:6px;padding:1px 6px}
+.ddate{font-size:11.5px;color:var(--muted);margin-left:auto}
+.dtitle{font-weight:600;font-size:16px;margin-top:2px}
+.done .dtitle{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--ink) 35%,transparent)}
+.ddesc{font-size:13.5px;color:var(--muted);margin-top:3px}
+.metric{flex:0 0 auto;text-align:right;min-width:52px}
+.metric b{display:block;font-family:var(--display);font-size:26px;line-height:1;color:var(--accent)}
+.metric span{font-size:11px;color:var(--muted)}
+.rest .metric b{color:var(--rest)}
+
+/* Cards / sections */
+.sec-title{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.01em;margin:18px 0 8px;text-transform:uppercase}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:10px;align-items:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{font-family:var(--display);font-size:30px;line-height:1;display:block}
+.stat span{font-size:11.5px;color:var(--muted)}
+label{font-size:13px;font-weight:600}
+input[type=number],input[type=date]{font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:600;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn.ghost{background:var(--surface-2);color:var(--ink)}
+.hint{font-size:12.5px;color:var(--muted)}
+.chart-box{overflow-x:auto}
+.chart-box svg{display:block;width:100%;height:auto}
+.tip{display:flex;gap:12px}
+.tip .ic{flex:0 0 auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);font-family:var(--display);font-weight:800;font-size:15px;color:var(--accent)}
+.tip h4{margin:0;font-size:15px}
+.tip p{margin:3px 0 0;font-size:13.5px;color:var(--muted)}
+.tip.hot{background:color-mix(in srgb,var(--sun) 16%,var(--surface));border-color:color-mix(in srgb,var(--sun) 40%,var(--line))}
+.tip.hot .ic{background:var(--sun);color:var(--sun-ink)}
+.status{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}
+.status .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:6px;vertical-align:1px}
+.status.ok .dot{background:var(--done)}
+
+/* Tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));z-index:10}
+.tabs-in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.sub{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.ex li{padding-block:10px;border-top:1px solid var(--line)}
+.ex li:first-child{border-top:0;padding-top:0}
+.ex li:last-child{padding-bottom:0}
+.ex-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.ex-name{font-weight:600}
+.ex-sets{flex:0 0 auto;font-family:var(--display);font-weight:700;font-size:18px;color:var(--accent);text-align:right}
+.ex-meta{font-size:13px;color:var(--muted);margin-top:2px}
+.eq{display:inline-block;font-size:11px;font-weight:600;background:var(--surface-2);color:var(--ink);border-radius:6px;padding:1px 6px;margin-right:6px}
+.tab{border:0;background:transparent;border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+.tab svg{width:22px;height:22px}
+.tab[aria-selected=true]{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <section id="v-plan">
+    <div class="bib">
+      <div class="bib-top"><span>Media maratón · 21K</span><span id="bibName">Jose David</span></div>
+      <div class="bib-main">
+        <div class="bib-week num" id="bibWeek">01<small>/12</small></div>
+        <div class="bib-side">
+          <div class="k num" id="bibKm">6K</div>
+          <div class="l" id="bibKmLabel">tirada larga</div>
+        </div>
+      </div>
+      <div class="bib-range" id="bibRange"></div>
+      <div class="segs" id="segs"></div>
+    </div>
+
+    <div class="strip-wrap">
+      <div class="strip" id="strip" role="tablist" aria-label="Semanas"></div>
+      <button class="today-btn" id="goNow" type="button">Hoy</button>
+    </div>
+
+    <div class="phase" id="phase"></div>
+    <ul class="days" id="days"></ul>
+  </section>
+
+  <section id="v-prog" hidden>
+    <h2 class="sec-title">Progreso</h2>
+    <div class="stats" id="stats"></div>
+
+    <h2 class="sec-title">Peso</h2>
+    <div class="card stack">
+      <label for="wIn" id="wLabel">Peso de la semana</label>
+      <div class="row">
+        <input type="number" id="wIn" inputmode="decimal" step="0.1" min="30" max="250" placeholder="kg">
+        <button class="btn" id="wSave" type="button">Guardar</button>
+      </div>
+      <div class="hint">Pésate el lunes en ayunas; guarda un dato por semana.</div>
+      <div class="chart-box" id="wChart"></div>
+    </div>
+
+    <h2 class="sec-title">Tirada larga</h2>
+    <div class="card chart-box" id="lrChart"></div>
+
+    <h2 class="sec-title">Ajustes</h2>
+    <div class="card stack">
+      <label for="startIn">Fecha de inicio (lunes de la semana 1)</label>
+      <div class="row">
+        <input type="date" id="startIn">
+        <button class="btn ghost" id="startSave" type="button">Cambiar</button>
+      </div>
+      <div class="hint" id="raceHint"></div>
+    </div>
+  </section>
+
+  <section id="v-str" hidden>
+    <h2 class="sec-title">Fuerza en casa</h2>
+    <div class="phase" id="strHead" style="margin-top:0"></div>
+    <h3 class="sub">Miércoles · rutina completa</h3>
+    <div class="card" id="strWed"></div>
+    <h3 class="sub">Jueves · core después de caminar</h3>
+    <div class="card" id="strThu"></div>
+  </section>
+
+  <section id="v-food" hidden>
+    <h2 class="sec-title">Nutrición</h2>
+    <div class="stack">
+      <div class="card tip"><div class="ic">kcal</div><div><h4>1.900 – 2.000 kcal al día</h4><p>Déficit moderado para bajar de peso sin perder músculo. Los días de tirada larga puedes subir a ~2.200.</p></div></div>
+      <div class="card tip"><div class="ic">P</div><div><h4>Proteína en cada comida</h4><p>Pollo, huevo, atún, carne magra o yogur griego. Apunta a ~1,6 g por kg de peso al día.</p></div></div>
+      <div class="card tip"><div class="ic">H₂O</div><div><h4>Mínimo 2 litros de agua</h4><p>Con las comidas, Coca-Cola Cero o Sprite limón en vez de gaseosa normal: cero calorías líquidas.</p></div></div>
+      <div class="card tip hot"><div class="ic">VIE</div><div><h4>Viernes noche: pasta boloñesa</h4><p>Carga de carbohidratos para llegar con el glucógeno lleno a la tirada del sábado.</p></div></div>
+      <div class="card tip hot"><div class="ic">SÁB</div><div><h4>Sábado post-tirada: hamburguesa</h4><p>Tu premio de la semana. Las calorías extra ayudan a recuperar después de los kilómetros.</p></div></div>
+      <div class="card tip"><div class="ic">+60</div><div><h4>Tiradas de más de 1 hora</h4><p>Lleva agua y, desde la semana 7, un gel o unas gomitas cada 40–45 min. Pruébalo en entrenos, nunca por primera vez el día de la carrera.</p></div></div>
+    </div>
+  </section>
+
+  <p class="status" id="status"><span class="dot"></span><span id="statusTxt">Cargando…</span></p>
+</div>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="tabs-in" role="tablist">
+    <button class="tab" role="tab" data-v="plan" aria-selected="true" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Semana</button>
+    <button class="tab" role="tab" data-v="prog" aria-selected="false" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Progreso</button>
+    <button class="tab" role="tab" data-v="str" aria-selected="false" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M3 9.5v5M18 7v10M21 9.5v5M6 12h12"/></svg>Fuerza</button>
+    <button class="tab" role="tab" data-v="food" aria-selected="false" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v8a2 2 0 0 0 4 0V2M9 10v12M17 2c-2 2-3 4-3 7s1 4 3 4v9"/></svg>Nutrición</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+  const WEEKS = 12;
+  const DOC = "plan/jose";
+  const LS = "plan21k-cache";
+  // Tirada larga por semana: progresión con semanas de descarga (4, 8) y afinamiento (11)
+  const LONG = [6,7,8,6,9,10,12,9,14,16,12,21];
+  const PACE = 7.5; // min/km estimado
+  const PHASES = [
+    {to:4, name:"Base", txt:"Construir el hábito. Todo a ritmo en el que puedas hablar. La semana 4 es de descarga: menos kilómetros para asimilar."},
+    {to:8, name:"Construcción", txt:"Pasas a correr continuo. El sábado ya supera la hora: sin prisa, lo importante es terminar cómodo. Semana 8 de descarga."},
+    {to:11, name:"Pico", txt:"Las tiradas más largas del plan. Practica hidratación y geles. La semana 11 baja volumen para llegar fresco."},
+    {to:12, name:"Carrera", txt:"Semana de la media maratón. Poco volumen, mucho descanso, pasta el viernes y a disfrutar el sábado."}
+  ];
+  const DAYS = ["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+  const DNAMES = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+
+  function tuesday(w){
+    if (w===12) return {t:"Trote suave de activación", d:"25 min muy suaves + 4 aceleraciones cortas.", m:"25", u:"min"};
+    if (w<=2) return {t:"Carrera suave (CaCo)", d:"45 min alternando 3 min corriendo / 2 caminando.", m:"45", u:"min"};
+    if (w<=4) return {t:"Carrera suave (CaCo)", d:"45 min alternando 5 min corriendo / 1 caminando.", m:"45", u:"min"};
+    if (w<=8) return {t:"Carrera continua", d:"40–45 min seguidos a ritmo conversacional.", m:"45", u:"min"};
+    if (w===11) return {t:"Carrera continua", d:"35 min cómodos. Semana de afinar, no de sumar.", m:"35", u:"min"};
+    return {t:"Carrera con ritmo", d:"10 min suave + 3×8 min a ritmo de carrera (2 min trote) + 5 min suave.", m:"50", u:"min"};
+  }
+  function weekPlan(w){
+    const km = LONG[w-1];
+    const tu = tuesday(w);
+    const race = w===WEEKS;
+    const mins = Math.round(km*PACE/5)*5;
+    return [
+      {t:"Descanso total", d:"Día libre. Aquí es donde el cuerpo asimila el trabajo.", m:"—", u:"", rest:true},
+      tu,
+      race ? {t:"Movilidad", d:"20 min de estiramientos y movilidad. Nada de pesas pesadas.", m:"20", u:"min"}
+           : {t:"Fuerza en casa", d:"50 min con barra, mancuernas, paralelas y rueda. Rutina completa en la pestaña Fuerza.", m:"50", u:"min"},
+      race ? {t:"Trote corto", d:"20 min muy suaves. Solo para soltar las piernas.", m:"20", u:"min"}
+           : {t:"Caminata rápida + core", d:"35 min caminando a paso fuerte (subidas si puedes) + 10 min de core en paralelas y rueda.", m:"45", u:"min"},
+      {t:"Descanso total", d:"Recuperación antes del fondo. Pasta boloñesa en la noche.", m:"—", u:"", rest:true},
+      race ? {t:"🏁 Media maratón", d:"21,1 km. Sal más lento de lo que crees; acelera solo después del km 15.", m:"21", u:"km", race:true}
+           : {t:"Tirada larga", d:`Aprox. ${km} km a ritmo lento y constante (~${mins} min).`, m:km+"", u:"km"},
+      race ? {t:"Caminata de recuperación", d:"30 min suaves. ¡Lo lograste!", m:"30", u:"min"}
+           : {t:"Caminata activa", d:"45–60 min de caminata suave para aflojar las piernas.", m:"50", u:"min"}
+    ];
+  }
+
+  // Rutinas de fuerza en casa por fase: [ejercicio, series×reps, equipo, nota]
+  const WARM = "5 min: saltos suaves, círculos de cadera, 10 sentadillas sin peso, 10 zancadas caminando.";
+  const CORE_THU = [
+    ["Elevación de rodillas en paralelas","3 × 10","Paralelas","Sin balancearte; sube las rodillas al pecho."],
+    ["Rueda abdominal","3 × 8","Rueda","De rodillas. Espalda neutra, no dejes caer la cadera."],
+    ["Plancha lateral","2 × 30 s por lado","—","Cadera alta, cuerpo en línea."]
+  ];
+  const STRENGTH = [
+    {to:4, name:"Base", note:"Aprende la técnica con poco peso. Termina cada serie con 2–3 repeticiones de reserva.", ex:[
+      ["Sentadilla goblet","3 × 12","Mancuerna","Mancuerna al pecho, baja hasta que los muslos queden paralelos."],
+      ["Peso muerto rumano","3 × 10","Barra","Rodillas un poco flexionadas; baja la barra pegada a las piernas."],
+      ["Zancada hacia atrás","3 × 10 por pierna","Mancuernas","Protege las rodillas mejor que la zancada hacia adelante."],
+      ["Elevación de talones","3 × 15","Mancuernas","En un escalón, bajando lento. Clave para gemelos y tendón de Aquiles."],
+      ["Fondos en paralelas","3 × 5–8","Paralelas","Si no salen, haz negativas: baja en 3–4 segundos."],
+      ["Remo con barra","3 × 10","Barra","Torso inclinado, lleva la barra al ombligo."],
+      ["Rueda abdominal","3 × 6","Rueda","De rodillas, recorrido corto al principio."],
+      ["Plancha","3 × 30 s","—","Aprieta glúteos y abdomen."]
+    ]},
+    {to:8, name:"Construcción", note:"Sube el peso cuando completes todas las series con buena técnica.", ex:[
+      ["Sentadilla con barra","4 × 8","Barra","Barra sobre la espalda alta, pecho arriba."],
+      ["Peso muerto rumano","4 × 8","Barra","Más peso que en la fase base, mismo control."],
+      ["Sentadilla búlgara","3 × 8 por pierna","Mancuernas","Pie de atrás en una silla. La mejor para la estabilidad al correr."],
+      ["Elevación de talones a una pierna","3 × 12","Mancuerna","Una pierna a la vez, en un escalón."],
+      ["Fondos en paralelas","3 × 8–10","Paralelas","Cuerpo un poco inclinado hacia adelante."],
+      ["Remo con mancuerna","3 × 10 por brazo","Mancuerna","Apoya una mano y una rodilla en un banco o silla."],
+      ["Rueda abdominal","3 × 10","Rueda","De rodillas, recorrido más largo."],
+      ["Puente de glúteo a una pierna","3 × 12 por pierna","—","Pausa de 1 s arriba."]
+    ]},
+    {to:11, name:"Pico", note:"Menos volumen y más calidad: las piernas deben llegar frescas a las tiradas largas. En la semana 11 haz solo 2 series de cada ejercicio.", ex:[
+      ["Sentadilla con barra","3 × 6","Barra","Peso exigente pero sin llegar al fallo."],
+      ["Peso muerto rumano","3 × 8","Barra","Controla la bajada."],
+      ["Subida al cajón o silla","3 × 8 por pierna","Mancuernas","Empuja con la pierna de arriba, sin impulsarte con la de abajo."],
+      ["Elevación de talones a una pierna","3 × 15","Mancuerna","Lento y completo."],
+      ["Fondos en paralelas","3 × el máximo con buena técnica","Paralelas","Deja 1–2 repeticiones de reserva."],
+      ["Rueda abdominal","3 × 8","Rueda","De pie si ya dominas la versión de rodillas."],
+      ["Elevación de rodillas en paralelas","3 × 10","Paralelas","Core fuerte para los últimos km."]
+    ]},
+    {to:12, name:"Carrera", note:"Semana de la carrera: sin pesas. Solo movilidad para llegar suelto al sábado.", ex:[
+      ["Movilidad de cadera","2 × 10 por lado","—","Círculos y aperturas de cadera."],
+      ["Sentadilla profunda sin peso","2 × 10","—","Lento, sosteniendo 2 s abajo."],
+      ["Estiramiento de gemelos y flexores de cadera","2 × 30 s","—","Sin rebotes."],
+      ["Plancha","2 × 30 s","—","Solo para activar el core."]
+    ]}
+  ];
+
+  // ---------- state ----------
+  function defaultStart(){ const d=new Date(); d.setHours(0,0,0,0); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return iso(d); }
+  function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function parse(s){ const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+
+  let state = {start:defaultStart(), checks:{}, weights:{}};
+  try { const c = JSON.parse(localStorage.getItem(LS)||"null"); if (c && c.start) state = Object.assign(state,c); } catch(e){}
+  let viewWeek = null;
+  let db = null, ref = null;
+
+  function currentWeek(){
+    const t=new Date(); t.setHours(0,0,0,0);
+    const diff=Math.floor((t-parse(state.start))/86400000);
+    return {week: Math.min(WEEKS, Math.max(1, Math.floor(diff/7)+1)), day: diff>=0 && diff<WEEKS*7 ? diff%7 : -1, before: diff<0, after: diff>=WEEKS*7};
+  }
+  function dayDate(w,i){ const d=parse(state.start); d.setDate(d.getDate()+(w-1)*7+i); return d; }
+  const fmt = new Intl.DateTimeFormat("es-CO",{day:"numeric",month:"short"});
+  function weekDone(w){ return DAYS.filter(d=>state.checks["w"+w+"_"+d]).length; }
+
+  // ---------- render ----------
+  const $ = id => document.getElementById(id);
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+  function render(){
+    const cw = currentWeek();
+    if (viewWeek===null) viewWeek = cw.week;
+    const w = viewWeek, plan = weekPlan(w), done = weekDone(w);
+
+    $("bibWeek").innerHTML = String(w).padStart(2,"0")+"<small>/12</small>";
+    $("bibKm").textContent = (w===WEEKS?"21,1":LONG[w-1])+"K";
+    $("bibKmLabel").textContent = w===WEEKS ? "¡día de carrera!" : "tirada larga";
+    $("bibRange").textContent = fmt.format(dayDate(w,0))+" – "+fmt.format(dayDate(w,6))+" · "+done+" de 7 días completos";
+    $("segs").innerHTML = DAYS.map(d=>`<span class="${state.checks["w"+w+"_"+d]?"on":""}"></span>`).join("");
+
+    $("strip").innerHTML = Array.from({length:WEEKS},(_,i)=>{
+      const n=i+1, dn=weekDone(n);
+      const cls=["wk", n===w?"sel":"", n===cw.week&&!cw.before&&!cw.after?"now":"", dn===7?"full":"", n===WEEKS?"race":""].join(" ");
+      return `<button type="button" role="tab" class="${cls}" data-w="${n}" aria-selected="${n===w}" aria-label="Semana ${n}, ${dn} de 7"><b class="num">${n}</b><i class="num">${n===WEEKS&&dn<7?"21K":dn+"/7"}</i></button>`;
+    }).join("");
+    const sel = $("strip").querySelector(".sel");
+    if (sel) sel.scrollIntoView({block:"nearest",inline:"center"});
+
+    const ph = PHASES.find(p=>w<=p.to);
+    $("phase").innerHTML = `<strong>Fase ${ph.name}.</strong> ${ph.txt}`;
+
+    $("days").innerHTML = plan.map((p,i)=>{
+      const key="w"+w+"_"+DAYS[i], isDone=!!state.checks[key];
+      const isToday = w===cw.week && i===cw.day;
+      const cls=["day", isDone?"done":"", p.rest?"rest":"", isToday?"today":""].join(" ");
+      return `<li><button type="button" class="${cls}" data-k="${key}" aria-pressed="${isDone}">
+        <span class="chk">${CHECK}</span>
+        <span class="day-body">
+          <span class="day-head"><span class="dname">${DNAMES[i]}</span>${isToday?'<span class="tag-today">Hoy</span>':""}<span class="ddate">${fmt.format(dayDate(w,i))}</span></span>
+          <div class="dtitle">${p.t}</div>
+          <div class="ddesc">${p.d}</div>
+        </span>
+        <span class="metric"><b class="num">${p.m}</b><span>${p.u}</span></span>
+      </button></li>`;
+    }).join("");
+
+    renderProgress(cw);
+    renderStrength();
+  }
+
+  function exList(list){
+    return `<ol class="ex">${list.map(e=>`<li><div class="ex-top"><span class="ex-name">${e[0]}</span><span class="ex-sets num">${e[1]}</span></div><div class="ex-meta"><span class="eq">${e[2]}</span>${e[3]}</div></li>`).join("")}</ol>`;
+  }
+  function renderStrength(){
+    const w=viewWeek, ph=STRENGTH.find(p=>w<=p.to);
+    $("strHead").innerHTML = `<strong>Semana ${w} · Fase ${ph.name}.</strong> ${ph.note}`;
+    $("strWed").innerHTML = (w<WEEKS?`<p class="hint" style="margin:0 0 8px"><strong>Calentamiento:</strong> ${WARM}</p>`:"")+exList(ph.ex)+(w<WEEKS?'<p class="hint" style="margin:8px 0 0">Descanso de 60–90 s entre series. Si algo duele en la rodilla, baja el peso o cambia el ejercicio.</p>':"");
+    $("strThu").innerHTML = w<WEEKS ? exList(CORE_THU) : '<p class="hint" style="margin:0">Semana de carrera: el jueves solo trote corto, sin core.</p>';
+  }
+
+  function renderProgress(cw){
+    let totalDone=0, kmDone=0, fullWeeks=0;
+    for (let n=1;n<=WEEKS;n++){ const dn=weekDone(n); totalDone+=dn; if(dn===7) fullWeeks++; if(state.checks["w"+n+"_sabado"]) kmDone+= n===WEEKS?21.1:LONG[n-1]; }
+    $("stats").innerHTML = `
+      <div class="stat"><b class="num">${Math.round(totalDone/(WEEKS*7)*100)}%</b><span>del plan</span></div>
+      <div class="stat"><b class="num">${fullWeeks}</b><span>semanas perfectas</span></div>
+      <div class="stat"><b class="num">${String(kmDone).replace(".",",")}</b><span>km en tiradas largas</span></div>`;
+
+    $("wLabel").textContent = "Peso de la semana "+viewWeek+" (kg)";
+    const wv = state.weights["w"+viewWeek];
+    if (document.activeElement!==$("wIn")) $("wIn").value = wv!=null ? wv : "";
+    $("wChart").innerHTML = weightChart();
+    $("lrChart").innerHTML = longChart();
+    if (document.activeElement!==$("startIn")) $("startIn").value = state.start;
+    const race = dayDate(WEEKS,5);
+    $("raceHint").textContent = "Carrera: sábado "+new Intl.DateTimeFormat("es-CO",{day:"numeric",month:"long",year:"numeric"}).format(race)+". La app pasa sola a la semana actual cada lunes.";
+  }
+
+  function weightChart(){
+    const pts=[]; for(let n=1;n<=WEEKS;n++){ const v=state.weights["w"+n]; if(v!=null) pts.push([n,+v]); }
+    if (!pts.length) return '<p class="hint">Aún no hay datos de peso.</p>';
+    const W=320,H=150,L=34,R=12,T=14,B=24;
+    const vs=pts.map(p=>p[1]); let lo=Math.floor(Math.min(...vs)-1), hi=Math.ceil(Math.max(...vs)+1);
+    const x=n=>L+(n-1)*(W-L-R)/(WEEKS-1), y=v=>T+(hi-v)*(H-T-B)/(hi-lo);
+    let g=""; const step=Math.max(1,Math.round((hi-lo)/4));
+    for(let v=lo;v<=hi;v+=step) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`;
+    for(let n=1;n<=WEEKS;n++) g+=`<text x="${x(n)}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--muted)">${n}</text>`;
+    const path=pts.map((p,i)=>(i?"L":"M")+x(p[0])+" "+y(p[1])).join(" ");
+    const last=pts[pts.length-1], first=pts[0], delta=(last[1]-first[1]).toFixed(1).replace(".",",");
+    const dots=pts.map(p=>`<circle cx="${x(p[0])}" cy="${y(p[1])}" r="${p===last?4.5:3}" fill="${p===last?"var(--accent)":"var(--surface)"}" stroke="var(--accent)" stroke-width="2"/>`).join("");
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Peso por semana">${g}<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>${dots}</svg>
+      <p class="hint">Último: <strong class="num">${String(last[1]).replace(".",",")} kg</strong>${pts.length>1?` · cambio desde la semana ${first[0]}: <strong class="num">${delta>0?"+":""}${delta} kg</strong>`:""}</p>`;
+  }
+
+  function longChart(){
+    const W=320,H=150,L=26,R=8,T=16,B=22, max=22;
+    const bw=(W-L-R)/WEEKS;
+    let s="";
+    [0,7,14,21].forEach(v=>{ const yy=T+(max-v)*(H-T-B)/max; s+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${L-5}" y="${yy+4}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`; });
+    LONG.forEach((km,i)=>{
+      const n=i+1, h=km*(H-T-B)/max, xx=L+i*bw+3, yy=H-B-h;
+      const done=!!state.checks["w"+n+"_sabado"];
+      const fill = done ? "var(--done)" : (n===viewWeek ? "var(--accent)" : "var(--surface-2)");
+      s+=`<rect x="${xx}" y="${yy}" width="${bw-6}" height="${h}" rx="3" fill="${fill}" stroke="${n===viewWeek?"var(--accent)":"none"}"/>`;
+      s+=`<text x="${xx+(bw-6)/2}" y="${yy-4}" text-anchor="middle" font-size="9.5" fill="var(--muted)">${km}</text>`;
+      s+=`<text x="${xx+(bw-6)/2}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--muted)">${n}</text>`;
+    });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kilómetros de la tirada larga por semana">${s}</svg><p class="hint">Verde = hecha · azul = semana que estás viendo. Km por semana.</p>`;
+  }
+
+  // ---------- persistence ----------
+  function setStatus(ok, txt){ $("status").className="status"+(ok?" ok":""); $("statusTxt").textContent=txt; }
+  function cache(){ try{ localStorage.setItem(LS, JSON.stringify(state)); }catch(e){} }
+  let saving=Promise.resolve(), timer=null;
+  function save(){
+    cache();
+    if (!ref) return;
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      const body=JSON.parse(JSON.stringify(state));
+      saving = saving.then(()=>ref.set(body)).then(()=>setStatus(true,"Guardado en tu cuenta")).catch(e=>{
+        setStatus(false, e && e.code==="invalid_argument" ? "Sin permiso para guardar en la nube; queda en este dispositivo" : "No se pudo guardar; se reintentará con el próximo cambio");
+      });
+    },350);
+  }
+
+  (async ()=>{
+    try { db = window.claude && await window.claude.use("db"); } catch(e){ db=null; }
+    if (!db){ setStatus(false,"Guardado solo en este dispositivo"); return; }
+    ref = db.doc(DOC);
+    let first=true;
+    ref.onSnapshot(snap=>{
+      if (snap.exists){
+        const d=snap.data();
+        state={start:d.start||state.start, checks:Object.assign({},d.checks||{}), weights:Object.assign({},d.weights||{})};
+        cache();
+      } else if (first && (Object.keys(state.checks).length || Object.keys(state.weights).length)) {
+        save(); // subir lo que había en este dispositivo
+      }
+      first=false;
+      setStatus(true,"Sincronizado con tu cuenta");
+      render();
+    }, ()=>setStatus(false,"Sin conexión con la nube; guardando en este dispositivo"));
+  })();
+
+  // ---------- events ----------
+  $("days").addEventListener("click",e=>{
+    const b=e.target.closest(".day"); if(!b) return;
+    const k=b.dataset.k;
+    if (state.checks[k]) delete state.checks[k]; else state.checks[k]=true;
+    if (navigator.vibrate) try{navigator.vibrate(12);}catch(_){}
+    render(); save();
+  });
+  $("strip").addEventListener("click",e=>{ const b=e.target.closest(".wk"); if(!b) return; viewWeek=+b.dataset.w; render(); });
+  $("goNow").addEventListener("click",()=>{ viewWeek=currentWeek().week; render(); });
+  $("wSave").addEventListener("click",()=>{
+    const v=parseFloat(String($("wIn").value).replace(",","."));
+    if (isNaN(v)) { delete state.weights["w"+viewWeek]; } else { state.weights["w"+viewWeek]=Math.round(v*10)/10; }
+    $("wIn").blur(); render(); save();
+  });
+  $("startSave").addEventListener("click",()=>{
+    const v=$("startIn").value; if(!v) return;
+    const d=parse(v); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); // siempre lunes
+    state.start=iso(d); viewWeek=null; $("startIn").blur(); render(); save();
+  });
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", x===t));
+    ["plan","prog","str","food"].forEach(v=>$("v-"+v).hidden = v!==t.dataset.v);
+    window.scrollTo(0,0);
+  }));
+  // Al volver a la app (p. ej. un lunes), salta a la semana actual
+  let lastWeek=currentWeek().week;
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden){ const cw=currentWeek().week; if(cw!==lastWeek){ lastWeek=cw; viewWeek=cw; } render(); } });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
